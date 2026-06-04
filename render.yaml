@@ -1,0 +1,56 @@
+# Render Blueprint (Infrastructure as Code)
+# Розгортання: на Render → Blueprints → New Blueprint Instance → оберіть цей репозиторій.
+# Підніме три ресурси: PostgreSQL, бекенд (Node) і фронтенд (статика).
+#
+# ВАЖЛИВО після першого деплою:
+#   1) У сервісі studorg-api відкрийте вкладку Shell і одноразово виконайте:
+#        npm run db:init && npm run db:seed
+#   2) Якщо Render додав суфікс до імені сервісу (бо studorg-api вже зайняте),
+#      виправте VITE_API_URL нижче на фактичну адресу бекенда й передеплойте фронт.
+
+databases:
+  - name: studorg-db
+    databaseName: studorg_docflow
+    user: studorg
+    plan: free
+
+services:
+  # --- Бекенд (Express API) ---
+  - type: web
+    name: studorg-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: studorg-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true        # Render згенерує випадковий секрет
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_ORIGIN
+        value: "*"                 # дозволити запити з будь-якого домену (Bearer-токени)
+      - key: PORT
+        value: "4000"
+
+  # --- Фронтенд (React + Vite, статика) ---
+  - type: web
+    name: studorg-web
+    runtime: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # Адреса бекенд-API. Має збігатися з реальним URL сервісу studorg-api.
+      - key: VITE_API_URL
+        value: https://studorg-api.onrender.com/api
+    routes:
+      # SPA: усі шляхи віддаємо index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
