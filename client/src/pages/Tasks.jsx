@@ -3,7 +3,6 @@ import { tasksApi, projectsApi, usersApi } from '../api/resources.js';
 import {
   TASK_COLUMNS as COLUMNS,
   taskPriorityLabels as priorityLabels,
-  taskNextStatus as nextStatus,
 } from '../constants/labels.js';
 
 export default function Tasks() {
@@ -12,6 +11,8 @@ export default function Tasks() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
   const [show, setShow] = useState(false);
+  const [dragId, setDragId] = useState(null);
+  const [dragOver, setDragOver] = useState(null);
   const [form, setForm] = useState({
     title: '', description: '', project_id: '', assignee_id: '', priority: 'medium', due_date: '',
   });
@@ -37,20 +38,46 @@ export default function Tasks() {
       setShow(false);
       setForm({ title: '', description: '', project_id: '', assignee_id: '', priority: 'medium', due_date: '' });
       load();
+    } catch (err) { setError(err.message); }
+  }
+
+  async function setStatus(task, statusKey) {
+    if (task.status === statusKey) return;
+    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: statusKey } : t)));
+    try {
+      await tasksApi.update(task.id, { status: statusKey });
     } catch (err) {
       setError(err.message);
+      load();
     }
   }
 
-  async function advance(task) {
-    await tasksApi.update(task.id, { status: nextStatus[task.status] });
-    load();
+  function move(task, dir) {
+    const idx = COLUMNS.findIndex((c) => c.key === task.status);
+    const nidx = idx + dir;
+    if (nidx < 0 || nidx >= COLUMNS.length) return;
+    setStatus(task, COLUMNS[nidx].key);
   }
 
   async function remove(id) {
     if (!confirm('Видалити задачу?')) return;
     await tasksApi.remove(id);
     load();
+  }
+
+  function onDragStart(e, task) {
+    setDragId(task.id);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+  function onDragOverCol(e, colKey) {
+    e.preventDefault();
+    if (dragOver !== colKey) setDragOver(colKey);
+  }
+  function onDropCol(colKey) {
+    const task = tasks.find((t) => t.id === dragId);
+    if (task) setStatus(task, colKey);
+    setDragId(null);
+    setDragOver(null);
   }
 
   return (
@@ -60,6 +87,7 @@ export default function Tasks() {
         <button className="btn" onClick={() => setShow(!show)}>+ Нова задача</button>
       </div>
       {error && <div className="alert">{error}</div>}
+      <p className="muted small">Перетягніть картку між стовпцями або скористайтеся стрілками ← →.</p>
 
       {show && (
         <form className="card" onSubmit={create}>
@@ -98,11 +126,23 @@ export default function Tasks() {
       )}
 
       <div className="board">
-        {COLUMNS.map((col) => (
-          <div className="board-col" key={col.key}>
+        {COLUMNS.map((col, colIdx) => (
+          <div
+            className={`board-col ${dragOver === col.key ? 'drop-target' : ''}`}
+            key={col.key}
+            onDragOver={(e) => onDragOverCol(e, col.key)}
+            onDragLeave={() => setDragOver((c) => (c === col.key ? null : c))}
+            onDrop={() => onDropCol(col.key)}
+          >
             <h4>{col.label} <span className="count">{tasks.filter((t) => t.status === col.key).length}</span></h4>
             {tasks.filter((t) => t.status === col.key).map((t) => (
-              <div className="task-card" key={t.id}>
+              <div
+                className={`task-card ${dragId === t.id ? 'dragging' : ''}`}
+                key={t.id}
+                draggable
+                onDragStart={(e) => onDragStart(e, t)}
+                onDragEnd={() => { setDragId(null); setDragOver(null); }}
+              >
                 <div className="task-title">{t.title}</div>
                 <div className="task-meta">
                   <span className={`prio prio-${t.priority}`}>{priorityLabels[t.priority]}</span>
@@ -110,7 +150,12 @@ export default function Tasks() {
                 </div>
                 <div className="muted small">{t.project_title} · {t.assignee_name || 'без виконавця'}</div>
                 <div className="task-actions">
-                  <button className="btn-link" onClick={() => advance(t)}>↻ далі</button>
+                  <div className="task-nav">
+                    <button className="btn-link" disabled={colIdx === 0}
+                      onClick={() => move(t, -1)} title="Назад">←</button>
+                    <button className="btn-link" disabled={colIdx === COLUMNS.length - 1}
+                      onClick={() => move(t, 1)} title="Далі">→</button>
+                  </div>
                   <button className="btn-link danger" onClick={() => remove(t.id)}>✕</button>
                 </div>
               </div>

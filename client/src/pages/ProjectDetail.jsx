@@ -53,7 +53,7 @@ export default function ProjectDetail() {
     } catch (err) { setError(err.message); }
   }
 
-  // Право керування: admin/head або координатор/організатор саме цього проєкту
+  // Право керування: admin/head або головний організатор/ментор/організатор саме цього проєкту
   const myMembership = project?.members?.find((m) => m.user_id === user?.id);
   const canManage =
     user?.role === 'admin' ||

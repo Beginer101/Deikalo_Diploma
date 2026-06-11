@@ -41,8 +41,15 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  // Перечитати профіль із сервера (після зміни організації/ролі)
+  async function refresh() {
+    try {
+      setUser(await authApi.me());
+    } catch { /* сесія недійсна — ігноруємо */ }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   );

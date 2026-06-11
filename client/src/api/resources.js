@@ -11,17 +11,33 @@ export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   register: (payload) => api.post('/auth/register', payload),
   me: () => api.get('/auth/me'),
+  updateProfile: (data) => api.put('/auth/profile', data),
+  changePassword: (current_password, new_password) =>
+    api.put('/auth/password', { current_password, new_password }),
 };
 
 export const organizationsApi = {
   list: () => api.get('/organizations'),
+  get: (id) => api.get(`/organizations/${id}`),
   create: (data) => api.post('/organizations', data),
   remove: (id) => api.del(`/organizations/${id}`),
+  // Членство (адміністратор)
+  addMember: (id, user_id) => api.post(`/organizations/${id}/members`, { user_id }),
+  removeMember: (id, userId) => api.del(`/organizations/${id}/members/${userId}`),
+  // Одноразові запрошення (хед своєї організації або адміністратор)
+  createInvite: (id, data) => api.post(`/organizations/${id}/invites`, data || {}),
+  listInvites: (id) => api.get(`/organizations/${id}/invites`),
+  join: (token) => api.post(`/organizations/join/${token}`),
 };
 
 export const usersApi = {
   list: (params) => api.get('/users' + qs(params)),
   changeRole: (id, role) => api.patch(`/users/${id}/role`, { role }),
+  remove: (id) => api.del(`/users/${id}`),
+  requestDeletion: (id, reason) => api.post(`/users/${id}/deletion-request`, { reason }),
+  deletionRequests: () => api.get('/users/deletion-requests'),
+  approveDeletion: (id) => api.post(`/users/deletion-requests/${id}/approve`),
+  rejectDeletion: (id) => api.post(`/users/deletion-requests/${id}/reject`),
 };
 
 export const projectsApi = {
@@ -61,6 +77,26 @@ export const attachmentsApi = {
   listByDocument: (documentId) => api.get(`/attachments/document/${documentId}`),
   remove: (id) => api.del(`/attachments/${id}`),
   downloadUrl: (id) => `${API_BASE}/attachments/${id}/download`,
+  // Завантаження файлу з підстановкою JWT-токена (anchor не передає заголовок).
+  // Доступне всім автентифікованим користувачам.
+  download: async (id, filename) => {
+    const res = await fetch(`${API_BASE}/attachments/${id}/download`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.error || 'Не вдалося завантажити файл');
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'file';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  },
   // Завантаження файлу (multipart) — окремо від JSON-клієнта
   upload: async (documentId, file) => {
     const fd = new FormData();

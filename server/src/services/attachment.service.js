@@ -27,6 +27,8 @@ export async function createFromUpload(documentId, file, actor) {
     entityId: Number(documentId),
     action: 'attach',
     summary: `${actor.full_name} прикріпив(ла) файл «${originalName}»`,
+    organizationId: actor.organization_id,
+    link: `/documents/${documentId}`,
   });
   return record;
 }

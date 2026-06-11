@@ -217,7 +217,9 @@ export default function DocumentDetail() {
         {attachments.map((a) => (
           <div className="row-line" key={a.id}>
             <span>
-              📎 <a href={attachmentsApi.downloadUrl(a.id)}>{a.original_name}</a>
+              📎 <a href="#" onClick={(e) => { e.preventDefault();
+                attachmentsApi.download(a.id, a.original_name).catch((err) => setError(err.message)); }}>
+                {a.original_name}</a>
               <span className="muted small"> {fmtSize(a.size_bytes)} · {a.uploaded_by_name}</span>
             </span>
             <button className="btn-link danger" onClick={() => deleteAttachment(a.id)}>✕</button>

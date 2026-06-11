@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { notificationsApi } from '../api/resources.js';
+import { API_BASE, getToken } from '../api/client.js';
 import { roleLabels } from '../constants/labels.js';
 
 export default function Layout({ children }) {
@@ -9,17 +10,38 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const [unread, setUnread] = useState(0);
 
-  // Періодичне оновлення лічильника непрочитаних сповіщень
+  // Лічильник непрочитаних сповіщень:
+  //  - real-time через SSE (EventSource) — миттєве оновлення;
+  //  - рідке фонове опитування як резерв, якщо стрім недоступний.
   useEffect(() => {
     let active = true;
-    function poll() {
+    function refresh() {
       notificationsApi.count()
         .then((d) => active && setUnread(d.unread))
         .catch(() => {});
     }
-    poll();
-    const t = setInterval(poll, 20000);
-    return () => { active = false; clearInterval(t); };
+    refresh();
+    const t = setInterval(refresh, 60000);
+
+    // Підписка на стрім подій (токен — через query, бо EventSource
+    // не підтримує власні заголовки). Перепідключення — вбудоване.
+    const token = getToken();
+    let es;
+    if (token && typeof EventSource !== 'undefined') {
+      es = new EventSource(`${API_BASE}/notifications/stream?token=${encodeURIComponent(token)}`);
+      es.addEventListener('notification', () => refresh());
+    }
+
+    // Миттєве оновлення лічильника після прочитання сповіщень
+    // (подію кидає сторінка «Сповіщення»)
+    window.addEventListener('notifications:read', refresh);
+
+    return () => {
+      active = false;
+      clearInterval(t);
+      es?.close();
+      window.removeEventListener('notifications:read', refresh);
+    };
   }, []);
 
   function handleLogout() {
@@ -40,13 +62,15 @@ export default function Layout({ children }) {
           <NavLink to="/notifications">
             Сповіщення {unread > 0 && <span className="nav-badge">{unread}</span>}
           </NavLink>
-          <NavLink to="/activity">Активність</NavLink>
+          {['admin', 'head'].includes(user?.role) && (
+            <NavLink to="/activity">Активність</NavLink>
+          )}
           <NavLink to="/organizations">Організації</NavLink>
-          {user?.role === 'admin' && <NavLink to="/metrics">Метрики</NavLink>}
+          {['admin', 'head'].includes(user?.role) && <NavLink to="/metrics">Метрики</NavLink>}
           <NavLink to="/users">Користувачі</NavLink>
         </nav>
         <div className="user-box">
-          <div className="user-name">{user?.full_name}</div>
+          <NavLink to="/profile" className="user-name">{user?.full_name}</NavLink>
           <div className="user-role">{roleLabels[user?.role] || user?.role}</div>
           <button className="btn-link" onClick={handleLogout}>Вийти</button>
         </div>

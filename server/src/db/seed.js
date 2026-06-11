@@ -67,8 +67,9 @@ async function seed() {
     // --- Членство ---
     await client.query(
       `INSERT INTO memberships (user_id, project_id, role_label) VALUES
-        ($1,$2,'координатор'),($3,$2,'волонтер'),
-        ($4,$5,'координатор'),($6,$5,'учасник')`,
+        ($1,$2,'головний організатор'),($3,$2,'волонтер'),
+        ($4,$2,'секретар організації'),
+        ($4,$5,'головний організатор'),($6,$5,'ментор')`,
       [head, pOpenDay, member, maria, pHack, andrii]
     );
 

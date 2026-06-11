@@ -3,6 +3,64 @@
   <component name="ChangeListManager">
     <list default="true" id="7807591d-9ab8-4cda-aaf7-9c124a922312" name="Changes" comment="Fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/api/resources.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/resources.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/constants/labels.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/constants/labels.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/context/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Activity.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Activity.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DocumentDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DocumentDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Metrics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Metrics.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Notifications.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Notifications.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Organizations.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Organizations.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ProjectDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ProjectDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Projects.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Projects.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Tasks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Tasks.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Users.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Users.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/render.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/config/env.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/config/env.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/activity.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/activity.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/auth.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/auth.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/document.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/document.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/metrics.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/metrics.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/organization.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/organization.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/project.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/project.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/task.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/task.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/user.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/db/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/db/schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/db/seed.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/db/seed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/middleware/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/activity.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/activity.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/document.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/document.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/metrics.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/metrics.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/organization.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/organization.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/project.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/project.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/task.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/task.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/repositories/user.repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repositories/user.repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/activity.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/activity.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/metrics.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/metrics.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/notifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/organizations.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/organizations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/activity.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/activity.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/attachment.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/attachment.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/auth.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/auth.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/document.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/document.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/metrics.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/metrics.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/notification.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/notification.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/organization.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/organization.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/project.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/project.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/task.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/task.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/user.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/user.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/tests/auth.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/tests/auth.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,18 +70,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Beginer101"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Beginer101&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Beginer101/EventManagementSystem.git",
-    "accountId": "eac0dc68-852e-43e2-9206-12f8f8d97f8a"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Beginer101/EventManagementSystem.git&quot;,
+    &quot;accountId&quot;: &quot;eac0dc68-852e-43e2-9206-12f8f8d97f8a&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -33,18 +91,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.3.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -60,7 +120,11 @@
       <option name="presentableId" value="Default" />
       <updated>1780510775594</updated>
       <workItem from="1780510777882" duration="172000" />
-      <workItem from="1780595336494" duration="3517000" />
+      <workItem from="1780595336494" duration="6894000" />
+      <workItem from="1780696744914" duration="595000" />
+      <workItem from="1781126432400" duration="224000" />
+      <workItem from="1781159703012" duration="3829000" />
+      <workItem from="1781169426932" duration="564000" />
     </task>
     <task id="LOCAL-00001" summary="Fix">
       <option name="closed" value="true" />

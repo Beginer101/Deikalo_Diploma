@@ -37,6 +37,21 @@ services:
         value: "*"                 # дозволити запити з будь-якого домену (Bearer-токени)
       - key: PORT
         value: "4000"
+      # --- Email (SMTP). Пароль НЕ зберігається в git: sync:false означає,
+      # що Render запитає значення в панелі під час створення/синхронізації
+      # Blueprint. Його також можна задати вручну: сервіс → Environment.
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_SECURE
+        value: "false"
+      - key: SMTP_USER
+        value: bot.25.05.2026@gmail.com
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        value: bot.25.05.2026@gmail.com
 
   # --- Фронтенд (React + Vite, статика) ---
   - type: web

@@ -6,7 +6,7 @@ import * as ctrl from '../controllers/project.controller.js';
 const router = Router();
 router.use(authenticate);
 
-// Детальні перевірки прав (admin/head/координатор) — у project.service.js
+// Детальні перевірки прав (admin/head/головний організатор/ментор) — у project.service.js
 router.get('/', asyncHandler(ctrl.list));
 router.get('/:id', asyncHandler(ctrl.getById));
 router.post('/', asyncHandler(ctrl.create));

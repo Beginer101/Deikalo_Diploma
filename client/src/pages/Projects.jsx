@@ -40,7 +40,7 @@ export default function Projects() {
     }
   }
 
-  // Дозвіл рахується на бекенді (admin/head або координатор) і приходить у профілі
+  // Дозвіл рахується на бекенді (admin/head або головний організатор/ментор) і приходить у профілі
   const canCreate = !!user?.can_create_projects;
 
   return (
@@ -57,13 +57,17 @@ export default function Projects() {
             onChange={(e) => setForm({ ...form, title: e.target.value })} required /></label>
           <label>Опис<textarea value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })} /></label>
-          <label>Організація
-            <select value={form.organization_id}
-              onChange={(e) => setForm({ ...form, organization_id: e.target.value })} required>
-              <option value="">— оберіть —</option>
-              {orgs.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
-          </label>
+          {user?.role === 'admin' ? (
+            <label>Організація
+              <select value={form.organization_id}
+                onChange={(e) => setForm({ ...form, organization_id: e.target.value })} required>
+                <option value="">— оберіть —</option>
+                {orgs.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
+              </select>
+            </label>
+          ) : (
+            <p className="muted small">Проєкт буде створено у вашій організації.</p>
+          )}
           <div className="form-row">
             <label>Початок<input type="date" value={form.start_date}
               onChange={(e) => setForm({ ...form, start_date: e.target.value })} /></label>

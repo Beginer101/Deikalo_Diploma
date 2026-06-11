@@ -38,6 +38,11 @@ export default function Metrics() {
   return (
     <div>
       <h1>Метрики та аналітика</h1>
+      <p className="muted">
+        {m.scope === 'organization'
+          ? 'Дані вашої організації'
+          : 'Дані всієї системи'}
+      </p>
 
       <div className="stats-row">
         <div className="stat stat-accent">

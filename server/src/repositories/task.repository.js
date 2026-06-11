@@ -1,6 +1,6 @@
 import { pool } from '../db/pool.js';
 
-export async function list(db = pool, { project_id, assignee_id, status } = {}) {
+export async function list(db = pool, { project_id, assignee_id, status, organization_id } = {}) {
   const params = [];
   const where = [];
   for (const [col, val] of [
@@ -12,6 +12,11 @@ export async function list(db = pool, { project_id, assignee_id, status } = {}) 
       params.push(val);
       where.push(`t.${col} = $${params.length}`);
     }
+  }
+  // Обмеження за організацією (через проєкт)
+  if (organization_id) {
+    params.push(organization_id);
+    where.push(`p.organization_id = $${params.length}`);
   }
   const { rows } = await db.query(
     `SELECT t.*, u.full_name AS assignee_name, p.title AS project_title
@@ -25,10 +30,20 @@ export async function list(db = pool, { project_id, assignee_id, status } = {}) 
   return rows;
 }
 
+export async function findById(db = pool, id) {
+  const { rows } = await db.query(
+    `SELECT t.*, p.title AS project_title, p.organization_id
+     FROM tasks t LEFT JOIN projects p ON p.id = t.project_id
+     WHERE t.id = $1`,
+    [id]
+  );
+  return rows[0];
+}
+
 export async function create(db = pool, t) {
   const { rows } = await db.query(
     `INSERT INTO tasks (title, description, status, priority, project_id, assignee_id, due_date)
-     VALUES ($1,$2,COALESCE($3,'todo'),COALESCE($4,'medium'),$5,$6,$7) RETURNING *`,
+     VALUES ($1,$2,COALESCE($3,'todo')::task_status,COALESCE($4,'medium')::task_priority,$5,$6,$7) RETURNING *`,
     [t.title, t.description || null, t.status || null, t.priority || null,
      t.project_id, t.assignee_id || null, t.due_date || null]
   );

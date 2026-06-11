@@ -14,3 +14,11 @@ export async function me(req, res) {
   const profile = await authService.getProfile(req.user.id);
   res.json(profile);
 }
+
+export async function updateProfile(req, res) {
+  res.json(await authService.updateProfile(req.user.id, req.body));
+}
+
+export async function changePassword(req, res) {
+  res.json(await authService.changePassword(req.user.id, req.body));
+}

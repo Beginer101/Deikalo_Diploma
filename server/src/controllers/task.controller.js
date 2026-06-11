@@ -2,18 +2,18 @@ import * as service from '../services/task.service.js';
 
 export async function list(req, res) {
   const { project_id, assignee_id, status } = req.query;
-  res.json(await service.list({ project_id, assignee_id, status }));
+  res.json(await service.list({ project_id, assignee_id, status }, req.user));
 }
 
 export async function create(req, res) {
-  res.status(201).json(await service.create(req.body));
+  res.status(201).json(await service.create(req.body, req.user));
 }
 
 export async function update(req, res) {
-  res.json(await service.update(req.params.id, req.body));
+  res.json(await service.update(req.params.id, req.body, req.user));
 }
 
 export async function remove(req, res) {
-  await service.remove(req.params.id);
+  await service.remove(req.params.id, req.user);
   res.status(204).end();
 }

@@ -52,3 +52,34 @@ export async function getProfile(userId) {
   const user = await userRepo.findProfileById(undefined, userId);
   return withCapabilities(user);
 }
+
+// Оновлення особистого профілю: пошта та контакти (усе опціонально)
+export async function updateProfile(userId, { email, telegram, discord, phone }) {
+  if (email !== undefined) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw httpError(400, 'Некоректний email');
+    }
+    email = email.toLowerCase();
+  }
+  const user = await userRepo.updateProfile(undefined, userId, {
+    email, telegram, discord, phone,
+  });
+  if (!user) throw httpError(404, 'Користувача не знайдено');
+  return withCapabilities(user);
+}
+
+// Зміна пароля з перевіркою поточного
+export async function changePassword(userId, { current_password, new_password }) {
+  if (!current_password || !new_password) {
+    throw httpError(400, 'Вкажіть поточний та новий пароль');
+  }
+  if (new_password.length < 6) {
+    throw httpError(400, 'Новий пароль має містити щонайменше 6 символів');
+  }
+  const user = await userRepo.findWithPassword(undefined, userId);
+  if (!user || !(await bcrypt.compare(current_password, user.password_hash))) {
+    throw httpError(401, 'Поточний пароль невірний');
+  }
+  await userRepo.updatePassword(undefined, userId, await bcrypt.hash(new_password, 10));
+  return { message: 'Пароль змінено' };
+}

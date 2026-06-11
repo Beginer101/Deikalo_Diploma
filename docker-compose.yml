@@ -22,9 +22,18 @@ services:
     environment:
       PORT: 4000
       DATABASE_URL: postgres://postgres:postgres@db:5432/studorg_docflow
-      JWT_SECRET: change_me_in_production
+      # Задайте власний секрет у .env поряд із цим файлом (JWT_SECRET=...).
+      # Якщо не задано — сервер згенерує тимчасовий і попередить у логах.
+      JWT_SECRET: ${JWT_SECRET:-}
       JWT_EXPIRES_IN: 7d
       CLIENT_ORIGIN: http://localhost:8080
+      # SMTP для реальної відправки email (значення з файлу .env)
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-noreply@studorg-docflow.local}
     ports:
       - "4000:4000"
     depends_on:

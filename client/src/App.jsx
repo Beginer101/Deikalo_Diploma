@@ -15,6 +15,9 @@ import Activity from './pages/Activity.jsx';
 import Calendar from './pages/Calendar.jsx';
 import Metrics from './pages/Metrics.jsx';
 import Users from './pages/Users.jsx';
+import JoinOrganization from './pages/JoinOrganization.jsx';
+import OrganizationDetail from './pages/OrganizationDetail.jsx';
+import Profile from './pages/Profile.jsx';
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -30,6 +33,8 @@ export default function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Protected><Dashboard /></Protected>} />
       <Route path="/organizations" element={<Protected><Organizations /></Protected>} />
+      <Route path="/organizations/:id" element={<Protected><OrganizationDetail /></Protected>} />
+      <Route path="/profile" element={<Protected><Profile /></Protected>} />
       <Route path="/projects" element={<Protected><Projects /></Protected>} />
       <Route path="/projects/:id" element={<Protected><ProjectDetail /></Protected>} />
       <Route path="/tasks" element={<Protected><Tasks /></Protected>} />
@@ -40,6 +45,7 @@ export default function App() {
       <Route path="/calendar" element={<Protected><Calendar /></Protected>} />
       <Route path="/metrics" element={<Protected><Metrics /></Protected>} />
       <Route path="/users" element={<Protected><Users /></Protected>} />
+      <Route path="/join/:token" element={<Protected><JoinOrganization /></Protected>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

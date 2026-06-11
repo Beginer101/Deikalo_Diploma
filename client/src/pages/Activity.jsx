@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { activityApi } from '../api/resources.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { activityActionIcons as actionIcons } from '../constants/labels.js';
 
 const FILTERS = [
@@ -10,6 +11,7 @@ const FILTERS = [
 ];
 
 export default function Activity() {
+  const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -20,6 +22,9 @@ export default function Activity() {
   return (
     <div>
       <h1>Стрічка активності</h1>
+      <p className="muted">
+        {user?.role === 'admin' ? 'Дії в усій системі' : 'Дії у вашій організації'}
+      </p>
       <div className="tabs">
         {FILTERS.map((f) => (
           <button key={f.key}

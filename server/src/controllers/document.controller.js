@@ -1,7 +1,7 @@
 import * as service from '../services/document.service.js';
 
 export async function list(req, res) {
-  res.json(await service.list(req.query, req.user.id));
+  res.json(await service.list(req.query, req.user));
 }
 
 export async function getById(req, res) {
@@ -9,7 +9,7 @@ export async function getById(req, res) {
 }
 
 export async function create(req, res) {
-  res.status(201).json(await service.create(req.body, req.user.id));
+  res.status(201).json(await service.create(req.body, req.user));
 }
 
 export async function update(req, res) {
@@ -29,7 +29,7 @@ export async function delegate(req, res) {
 }
 
 export async function addComment(req, res) {
-  res.status(201).json(await service.addComment(req.params.id, req.user.id, req.body.body));
+  res.status(201).json(await service.addComment(req.params.id, req.user, req.body.body));
 }
 
 export async function remove(req, res) {

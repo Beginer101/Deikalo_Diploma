@@ -1,9 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import jwt from 'jsonwebtoken';
-import { authenticate, authorize } from '../src/middleware/auth.js';
+import { authenticate, authenticateSSE, authorize } from '../src/middleware/auth.js';
+import { config } from '../src/config/env.js';
 
-const SECRET = process.env.JWT_SECRET || 'super_secret_change_me';
+// Той самий секрет, що й у middleware (у dev може бути згенерований випадково)
+const SECRET = config.jwt.secret;
 
 // Хелпери-заглушки для req/res
 function mockRes() {
@@ -55,4 +57,21 @@ test('authorize: блокує недозволену роль (403)', () => {
   const res = mockRes();
   authorize('admin')(req, res, () => {});
   assert.equal(res.statusCode, 403);
+});
+
+test('authenticateSSE: приймає валідний токен із query-параметра', () => {
+  const token = jwt.sign({ id: 3, role: 'member' }, SECRET);
+  const req = { query: { token } };
+  const res = mockRes();
+  let nextCalled = false;
+  authenticateSSE(req, res, () => { nextCalled = true; });
+  assert.equal(nextCalled, true);
+  assert.equal(req.user.id, 3);
+});
+
+test('authenticateSSE: відхиляє запит без токена (401)', () => {
+  const req = { query: {} };
+  const res = mockRes();
+  authenticateSSE(req, res, () => {});
+  assert.equal(res.statusCode, 401);
 });

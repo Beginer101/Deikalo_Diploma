@@ -1,10 +1,29 @@
 import { pool } from '../db/pool.js';
 
+// Організація, до якої належить документ: через проєкт або (якщо проєкту
+// немає) через організацію автора. Використовується для сповіщень.
+export async function getOrganizationId(db = pool, id) {
+  const { rows } = await db.query(
+    `SELECT COALESCE(p.organization_id, u.organization_id) AS organization_id
+     FROM documents d
+     LEFT JOIN projects p ON p.id = d.project_id
+     LEFT JOIN users u ON u.id = d.author_id
+     WHERE d.id = $1`,
+    [id]
+  );
+  return rows[0]?.organization_id || null;
+}
+
 // ---- Документи ----
 export async function list(db = pool, filters, userId) {
-  const { project_id, status, mine, pending_for_me } = filters;
+  const { project_id, status, mine, pending_for_me, organization_id } = filters;
   const params = [];
   const where = [];
+  // Обмеження за організацією автора документа
+  if (organization_id) {
+    params.push(organization_id);
+    where.push(`u.organization_id = $${params.length}`);
+  }
   if (project_id) {
     params.push(project_id);
     where.push(`d.project_id = $${params.length}`);

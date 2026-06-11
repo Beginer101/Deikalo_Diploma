@@ -8,18 +8,23 @@ export async function create(db = pool, { userId, entityType, entityId, action, 
   );
 }
 
-export async function list(db = pool, { entity_type, limit = 50 } = {}) {
+export async function list(db = pool, { entity_type, organization_id, limit = 50 } = {}) {
   const params = [];
-  let where = '';
+  const where = [];
   if (entity_type) {
     params.push(entity_type);
-    where = `WHERE a.entity_type = $${params.length}`;
+    where.push(`a.entity_type = $${params.length}`);
+  }
+  // Обмеження за організацією виконавця дії (для керівників)
+  if (organization_id) {
+    params.push(organization_id);
+    where.push(`u.organization_id = $${params.length}`);
   }
   params.push(Math.min(Number(limit) || 50, 200));
   const { rows } = await db.query(
     `SELECT a.*, u.full_name AS user_name
      FROM activity_log a LEFT JOIN users u ON u.id = a.user_id
-     ${where}
+     ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
      ORDER BY a.created_at DESC
      LIMIT $${params.length}`,
     params

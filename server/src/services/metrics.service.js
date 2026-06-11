@@ -3,9 +3,13 @@ import * as metricsRepo from '../repositories/metrics.repository.js';
 const toMap = (rows, key) =>
   rows.reduce((acc, r) => ({ ...acc, [r[key]]: Number(r.count) }), {});
 
-export async function getAdminMetrics() {
-  const r = await metricsRepo.adminMetrics();
+// Адміністратор бачить метрики всієї системи,
+// керівник (head) — лише своєї організації
+export async function getMetrics(actor) {
+  const organizationId = actor.role === 'admin' ? null : actor.organization_id;
+  const r = await metricsRepo.metrics(undefined, organizationId);
   return {
+    scope: organizationId ? 'organization' : 'system',
     totals: r.totals.rows[0],
     documents_by_status: toMap(r.docsByStatus.rows, 'status'),
     documents_by_type: r.docsByType.rows.map((x) => ({ type: x.doc_type, count: Number(x.count) })),

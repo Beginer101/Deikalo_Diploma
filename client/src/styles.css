@@ -45,7 +45,8 @@ a { color: var(--primary); text-decoration: none; }
 .sidebar nav a:hover { background: #334155; color: #fff; }
 .sidebar nav a.active { background: #334155; color: #fff; border-left-color: var(--primary); }
 .user-box { padding: 16px 20px; border-top: 1px solid #334155; }
-.user-name { font-weight: 600; color: #fff; }
+.user-name { font-weight: 600; color: #fff; display: block; text-decoration: none; }
+a.user-name:hover { color: var(--primary); }
 .user-role { font-size: .8rem; color: #94a3b8; margin-bottom: 8px; }
 .content { flex: 1; padding: 32px 40px; max-width: 1200px; }
 
@@ -215,3 +216,19 @@ textarea { resize: vertical; }
 .table-head { font-weight: 600; color: var(--muted); }
 .saved-mark { color: #065f46; font-size: .8rem; }
 .notice { background: #fffbeb; border-color: #fde68a; font-weight: 500; }
+.request-form { display: flex; gap: 8px; align-items: center; padding: 8px 0 12px; }
+.request-form input { flex: 1; margin: 0; }
+
+/* --- Kanban drag&drop --- */
+.task-card { cursor: grab; }
+.task-card.dragging { opacity: .5; }
+.board-col.drop-target { outline: 2px dashed var(--primary); outline-offset: -4px; background: #e6ecfb; }
+.task-nav { display: flex; gap: 6px; }
+.request-form { display: flex; gap: 8px; align-items: center; padding: 8px 0 12px; }
+.request-form input { flex: 1; margin: 0; }
+
+/* --- Kanban drag&drop --- */
+.task-card { cursor: grab; }
+.task-card.dragging { opacity: .5; }
+.board-col.drop-target { outline: 2px dashed var(--primary); outline-offset: -4px; background: #e6ecfb; }
+.task-nav { display: flex; gap: 6px; }

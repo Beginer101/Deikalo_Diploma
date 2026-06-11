@@ -20,8 +20,10 @@ async function withTransaction(fn) {
   }
 }
 
-export function list(filters, userId) {
-  return docRepo.list(undefined, filters, userId);
+export function list(filters, actor) {
+  const f = { ...filters };
+  if (actor && actor.role !== 'admin') f.organization_id = actor.organization_id;
+  return docRepo.list(undefined, f, actor.id);
 }
 
 export async function getDetails(id) {
@@ -35,11 +37,20 @@ export async function getDetails(id) {
   return { ...doc, approvals, history, comments };
 }
 
-export async function create(data, authorId) {
+export async function create(data, actor) {
   if (!data.title) throw httpError(400, 'Вкажіть назву документа');
   return withTransaction(async (client) => {
-    const doc = await docRepo.create(client, { ...data, author_id: authorId });
-    await docRepo.addHistory(client, doc.id, authorId, 'Створено документ');
+    const doc = await docRepo.create(client, { ...data, author_id: actor.id });
+    await docRepo.addHistory(client, doc.id, actor.id, 'Створено документ');
+    await logActivity(client, {
+      userId: actor.id,
+      entityType: 'document',
+      entityId: doc.id,
+      action: 'create',
+      summary: `${actor.full_name} створив(ла) документ «${doc.title}»`,
+      organizationId: await docRepo.getOrganizationId(client, doc.id),
+      link: `/documents/${doc.id}`,
+    });
     return doc;
   });
 }
@@ -87,6 +98,8 @@ export async function submit(id, approverIds, actor) {
       entityId: Number(id),
       action: 'submit',
       summary: `${actor.full_name} відправив(ла) документ «${doc.title}» на узгодження`,
+      organizationId: await docRepo.getOrganizationId(client, id),
+      link: `/documents/${id}`,
     });
     return { message: 'Документ відправлено на узгодження' };
   });
@@ -136,6 +149,8 @@ export async function decide(id, decision, comment, actor) {
       entityId: Number(id),
       action: decision === 'approved' ? 'approve' : 'reject',
       summary: `${actor.full_name} ${decision === 'approved' ? 'погодив(ла)' : 'відхилив(ла)'} крок документа «${doc.title}»`,
+      organizationId: await docRepo.getOrganizationId(client, id),
+      link: `/documents/${id}`,
     });
 
     return { message: 'Рішення збережено', status: docStatus };
@@ -166,14 +181,39 @@ export async function delegate(id, toUserId, comment, actor) {
       entityId: Number(id),
       action: 'delegate',
       summary: `${actor.full_name} делегував(ла) погодження документа «${doc.title}»`,
+      organizationId: await docRepo.getOrganizationId(client, id),
+      link: `/documents/${id}`,
     });
     return { message: 'Крок делеговано' };
   });
 }
 
-export function addComment(id, authorId, body) {
+export async function addComment(id, actor, body) {
   if (!body) throw httpError(400, 'Порожній коментар');
-  return docRepo.addComment(undefined, id, authorId, body);
+  const doc = await docRepo.findRawById(undefined, id);
+  if (!doc) throw httpError(404, 'Документ не знайдено');
+
+  const comment = await docRepo.addComment(undefined, id, actor.id, body);
+
+  // Сповіщення автору документа про новий коментар
+  if (doc.author_id !== actor.id) {
+    await notifyUser(undefined, {
+      userId: doc.author_id,
+      type: 'comment',
+      message: `${actor.full_name} прокоментував(ла) ваш документ «${doc.title}»`,
+      link: `/documents/${id}`,
+    });
+  }
+  await logActivity(undefined, {
+    userId: actor.id,
+    entityType: 'document',
+    entityId: Number(id),
+    action: 'comment',
+    summary: `${actor.full_name} додав(ла) коментар до документа «${doc.title}»`,
+    organizationId: await docRepo.getOrganizationId(undefined, id),
+    link: `/documents/${id}`,
+  });
+  return comment;
 }
 
 export async function remove(id, actor) {
@@ -182,5 +222,17 @@ export async function remove(id, actor) {
   if (doc.author_id !== actor.id && actor.role !== 'admin') {
     throw httpError(403, 'Видалити може лише автор або адміністратор');
   }
+  const organizationId = await docRepo.getOrganizationId(undefined, id);
+
   await docRepo.remove(undefined, id);
+
+  await logActivity(undefined, {
+    userId: actor.id,
+    entityType: 'document',
+    entityId: Number(id),
+    action: 'delete',
+    summary: `${actor.full_name} видалив(ла) документ «${doc.title}»`,
+    organizationId,
+    link: '/documents',
+  });
 }

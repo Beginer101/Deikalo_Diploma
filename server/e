@@ -1,0 +1,8 @@
+/sessions/dreamy-eager-babbage/mnt/EventManagementSystem/server/src/services/user.service.js:100
+  if (!req) throw httpError(404, 'Запит не з�
+                                 ^^^^^^^^^^^^
+
+SyntaxError: Invalid or unexpected token
+    at checkSyntax (node:internal/main/check_syntax:74:5)
+
+Node.js v22.22.0

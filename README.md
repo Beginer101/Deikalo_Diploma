@@ -101,7 +101,6 @@ createdb studorg_docflow
 
 ```bash
 cd server
-cp .env.example .env          # відредагуйте DATABASE_URL та JWT_SECRET
 npm install
 npm run db:init               # створення таблиць (schema.sql)
 npm run db:seed               # завантаження демо-даних (необов'язково)

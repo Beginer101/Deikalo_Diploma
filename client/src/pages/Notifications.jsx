@@ -12,14 +12,21 @@ export default function Notifications() {
   }
   useEffect(load, []);
 
+  // Повідомити Layout, що лічильник непрочитаних треба оновити
+  const pingBadge = () => window.dispatchEvent(new Event('notifications:read'));
+
   async function open(n) {
-    if (!n.is_read) await notificationsApi.markRead(n.id);
+    if (!n.is_read) {
+      await notificationsApi.markRead(n.id);
+      pingBadge();
+    }
     if (n.link) navigate(n.link);
     else load();
   }
 
   async function markAll() {
     await notificationsApi.markAllRead();
+    pingBadge();
     load();
   }
 

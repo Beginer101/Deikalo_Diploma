@@ -50,7 +50,7 @@ export async function listMembers(db = pool, projectId) {
 export async function create(db = pool, p) {
   const { rows } = await db.query(
     `INSERT INTO projects (title, description, status, organization_id, owner_id, start_date, end_date)
-     VALUES ($1,$2,COALESCE($3,'planned'),$4,$5,$6,$7) RETURNING *`,
+     VALUES ($1,$2,COALESCE($3,'planned')::project_status,$4,$5,$6,$7) RETURNING *`,
     [p.title, p.description || null, p.status || null, p.organization_id,
      p.owner_id, p.start_date || null, p.end_date || null]
   );
@@ -92,11 +92,14 @@ export async function remove(db = pool, id) {
   await db.query('DELETE FROM projects WHERE id = $1', [id]);
 }
 
-// Чи є користувач координатором/організатором хоча б в одному проєкті
+// Чи має користувач керівну роль-мітку хоча б в одному проєкті
+// (головний організатор / ментор / організатор)
 export async function isCoordinatorAnywhere(db = pool, userId) {
   const { rows } = await db.query(
     `SELECT 1 FROM memberships
-     WHERE user_id = $1 AND role_label IN ('координатор', 'організатор') LIMIT 1`,
+     WHERE user_id = $1
+       AND role_label IN ('головний організатор', 'ментор', 'організатор')
+     LIMIT 1`,
     [userId]
   );
   return rows.length > 0;

@@ -2,11 +2,11 @@ import * as service from '../services/project.service.js';
 
 export async function list(req, res) {
   const { organization_id, status } = req.query;
-  res.json(await service.list({ organization_id, status }));
+  res.json(await service.list({ organization_id, status }, req.user));
 }
 
 export async function getById(req, res) {
-  res.json(await service.getById(req.params.id));
+  res.json(await service.getById(req.params.id, req.user));
 }
 
 export async function create(req, res) {
