@@ -9,6 +9,7 @@
     "dev": "node --watch src/index.js",
     "db:init": "node src/db/init.js",
     "db:seed": "node src/db/seed.js",
+    "db:migrate": "node src/db/migrate.js",
     "test": "node --test"
   },
   "dependencies": {
