@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { organizationsApi, usersApi } from '../api/resources.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -77,6 +77,12 @@ export default function Organizations() {
 
   // Кандидати на членство: користувачі поза цією організацією
   const candidates = (orgId) => users.filter((u) => u.organization_id !== orgId);
+
+  // Перелік організацій — лише для адміністратора; решту перенаправляємо
+  // на сторінку власної організації (або на дашборд, якщо її немає)
+  if (user && user.role !== 'admin') {
+    return <Navigate to={user.organization_id ? `/organizations/${user.organization_id}` : '/'} replace />;
+  }
 
   return (
     <div>

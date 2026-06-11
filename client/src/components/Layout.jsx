@@ -65,7 +65,10 @@ export default function Layout({ children }) {
           {['admin', 'head'].includes(user?.role) && (
             <NavLink to="/activity">Активність</NavLink>
           )}
-          <NavLink to="/organizations">Організації</NavLink>
+          {user?.role === 'admin' && <NavLink to="/organizations">Організації</NavLink>}
+          {user?.role !== 'admin' && user?.organization_id && (
+            <NavLink to={`/organizations/${user.organization_id}`}>Моя організація</NavLink>
+          )}
           {['admin', 'head'].includes(user?.role) && <NavLink to="/metrics">Метрики</NavLink>}
           <NavLink to="/users">Користувачі</NavLink>
         </nav>

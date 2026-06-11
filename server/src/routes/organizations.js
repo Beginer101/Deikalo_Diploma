@@ -10,7 +10,9 @@ router.use(authenticate);
 // користувачу; реєструється до '/:id', щоб 'join' не сприймався як id)
 router.post('/join/:token', asyncHandler(ctrl.join));
 
-router.get('/', asyncHandler(ctrl.list));
+// Перелік усіх організацій — лише адміністратор системи.
+// Сторінка конкретної організації (/:id) доступна всім автентифікованим.
+router.get('/', authorize('admin'), asyncHandler(ctrl.list));
 router.get('/:id', asyncHandler(ctrl.getById));
 router.post('/', authorize('admin'), asyncHandler(ctrl.create));
 router.put('/:id', authorize('admin'), asyncHandler(ctrl.update));
