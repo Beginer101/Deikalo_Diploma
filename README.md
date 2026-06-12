@@ -1,5 +1,7 @@
 # Інформаційна система автоматизації документообігу та координації проєктів студентських організацій
 
+Full-stack web app for student organizations: project management, Kanban tasks, and electronic document approval workflow. React 18 + Node.js/Express + PostgreSQL, Docker, layered architecture, unit tests.
+
 Повнофункціональний веб-застосунок для студентських організацій: ведення проєктів, задач (Kanban), а головне — **електронний документообіг з маршрутом узгодження** (наказів, кошторисів, звітів тощо).
 
 ## Технологічний стек
